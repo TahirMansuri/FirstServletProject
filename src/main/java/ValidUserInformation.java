@@ -9,4 +9,14 @@ public class ValidUserInformation {
         }
         return false;
     }
+
+    public static boolean isValidPassword(String password) {
+        String regex = "^[a-z](?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=]).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        if (pattern.matcher(password).matches()) {
+            return true;
+        }
+        return false;
+    }
+
 }

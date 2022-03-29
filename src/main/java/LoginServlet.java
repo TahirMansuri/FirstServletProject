@@ -25,12 +25,17 @@ public class LoginServlet extends HttpServlet {
         String user = getServletConfig().getInitParameter("user");
         String pass = getServletConfig().getInitParameter("pass");
 
-        if (ValidUserInformation.isValidUsername(user)) {
-            if (user.equals(username) && pass.equals(password)) {
-                req.setAttribute("user", username);
-                req.getRequestDispatcher("LoginSuccess.jsp").forward(req, resp);
-            } else {
-                failedLogin(req, resp, "Username or Password is Incorrect...");
+        if (ValidUserInformation.isValidUsername(username)) {
+            if(ValidUserInformation.isValidPassword(password)) {
+                if (user.equals(username) && pass.equals(password)) {
+                    req.setAttribute("user", username);
+                    req.getRequestDispatcher("LoginSuccess.jsp").forward(req, resp);
+                } else {
+                    failedLogin(req, resp, "Username or Password is Incorrect...");
+                }
+            }
+            else {
+                failedLogin(req,resp,"Password must must contain 8 Character, 1 Uppercase, 1 Numeric and 1 Special Character.");
             }
         } else {
             failedLogin(req,resp,"Username must Start with Capital Letter and Contain 3 Char at least.");
