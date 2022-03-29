@@ -10,10 +10,10 @@ import java.io.PrintWriter;
 
 @WebServlet(
         description = "Login Servlet Demo",
-        urlPatterns = { "/LoginServlet" },
+        urlPatterns = {"/LoginServlet"},
         initParams = {
-                @WebInitParam(name="user", value = "tahir"),
-                @WebInitParam(name="pass", value = "tahir123")
+                @WebInitParam(name = "user", value = "Tahir"),
+                @WebInitParam(name = "pass", value = "tahir123")
         }
 )
 public class LoginServlet extends HttpServlet {
@@ -25,14 +25,26 @@ public class LoginServlet extends HttpServlet {
         String user = getServletConfig().getInitParameter("user");
         String pass = getServletConfig().getInitParameter("pass");
 
-        if(user.equals(username) && pass.equals(password)) {
-            req.setAttribute("user",username);
-            req.getRequestDispatcher("LoginSuccess.jsp").forward(req,resp);
+        if (ValidUserInformation.isValidUsername(user)) {
+            if (user.equals(username) && pass.equals(password)) {
+                req.setAttribute("user", username);
+                req.getRequestDispatcher("LoginSuccess.jsp").forward(req, resp);
+            } else {
+                failedLogin(req, resp, "Username or Password is Incorrect...");
+            }
         } else {
+            failedLogin(req,resp,"Username must Start with Capital Letter and Contain 3 Char at least.");
+        }
+    }
+
+    public void failedLogin(HttpServletRequest req, HttpServletResponse resp, String message) {
+        try {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.html");
             PrintWriter printWriter = resp.getWriter();
-            printWriter.println("<h3>Entered Username or password is Wrong</h3>");
-            requestDispatcher.include(req,resp);
+            printWriter.println("<h3>"+message+"</h3>");
+            requestDispatcher.include(req, resp);
+        } catch (IOException ioe) {
+        } catch (ServletException servexp) {
         }
     }
 }
