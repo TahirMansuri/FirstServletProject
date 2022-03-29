@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="user-design.css"/>
 </head>
 <body>
     <form action="LoginServlet" method="get">
-        Username : <input type="text" name="user"> <br>
-        Password : <input type="text" name="pass"> <br>
+        Username : <input type="text" id="user" name="user"> <error-output class="user-error" for="user"></error-output> <br>
+
+        Password : <input type="text" id="pass" name="pass"> <error-output class="pass-error" for="pass"></error-output> <br>
         <input type="submit" value="login">
     </form>
 </body>
+<script>
+    const user = document.querySelector('#user');
+    const userError = document.querySelector('.user-error');
+    user.addEventListener('input', function () {
+        let nameRegex = RegExp('^[A-Z]{1}[a-zA-Z]{2,}$');
+        if (nameRegex.test(user.value))
+            userError.textContent = "";
+        else userError.textContent = "Name is Incorrect";
+    });
+
+    const password = document.querySelector('#pass');
+    const passerror = document.querySelector('.pass-error');
+    password.addEventListener('input',function(){
+        let pattern = RegExp('^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_-])[a-zA-Z0-9].{8,}$');
+        if(pattern.test(password.value)) passerror.textContent = "";
+        else passerror.textContent = "Invalid Password.";
+    });
+
+</script>
 </html>
